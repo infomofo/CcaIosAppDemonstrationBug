@@ -1,0 +1,216 @@
+/*
+       Licensed to the Apache Software Foundation (ASF) under one
+       or more contributor license agreements.  See the NOTICE file
+       distributed with this work for additional information
+       regarding copyright ownership.  The ASF licenses this file
+       to you under the Apache License, Version 2.0 (the
+       "License"); you may not use this file except in compliance
+       with the License.  You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing,
+       software distributed under the License is distributed on an
+       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+       KIND, either express or implied.  See the License for the
+       specific language governing permissions and limitations
+       under the License.
+*/
+
+// GENERATED FILE! DO NOT EDIT!
+
+import java.util.regex.Pattern
+import groovy.swing.SwingBuilder
+
+ext.cordova = {}
+apply from: 'cordova.gradle', to: ext.cordova
+apply plugin: 'android'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.0+'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}
+
+ext.multiarch=false
+
+android {
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+    }
+
+    defaultConfig {
+        versionCode Integer.parseInt(System.env.ANDROID_VERSION_CODE ?: ("" + getVersionCodeFromManifest() + "0"))
+    }
+
+    compileSdkVersion cordova.cordovaSdkVersion
+    buildToolsVersion cordova.cordovaBuildToolsVersion
+
+    if (multiarch || System.env.BUILD_MULTIPLE_APKS) {
+        productFlavors {
+            armv7 {
+                versionCode defaultConfig.versionCode + 2
+                ndk {
+                    abiFilters "armeabi-v7a", ""
+                }
+            }
+            x86 {
+                versionCode defaultConfig.versionCode + 4
+                ndk {
+                    abiFilters "x86", ""
+                }
+            }
+            all {
+                ndk {
+                    abiFilters "all", ""
+                }
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    if (System.env.RELEASE_SIGNING_PROPERTIES_FILE) {
+        signingConfigs {
+            release {
+                // These must be set or Gradle will complain (even if they are overridden).
+                keyAlias = ""
+                keyPassword = ""
+                storeFile = null
+                storePassword = ""
+            }
+        }
+        buildTypes {
+            release {
+                signingConfig signingConfigs.release
+            }
+        }
+        addSigningProps(System.env.RELEASE_SIGNING_PROPERTIES_FILE, signingConfigs.release)
+    }
+    if (System.env.DEBUG_SIGNING_PROPERTIES_FILE) {
+        addSigningProps(System.env.DEBUG_SIGNING_PROPERTIES_FILE, signingConfigs.debug)
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+    // SUB-PROJECT DEPENDENCIES START
+    debugCompile project(path: ":CordovaLib", configuration: "debug")
+    releaseCompile project(path: ":CordovaLib", configuration: "release")
+    debugCompile project(path: ":org.apache.cordova.engine.crosswalk:xwalk_core_library", configuration: "debug")
+    releaseCompile project(path: ":org.apache.cordova.engine.crosswalk:xwalk_core_library", configuration: "release")
+    // SUB-PROJECT DEPENDENCIES END
+}
+
+
+def promptForPassword(msg) {
+    if (System.console() == null) {
+        def ret = null
+        new SwingBuilder().edt {
+            dialog(modal: true, title: 'Enter password', alwaysOnTop: true, resizable: false, locationRelativeTo: null, pack: true, show: true) {
+                vbox {
+                    label(text: msg)
+                    def input = passwordField()
+                    button(defaultButton: true, text: 'OK', actionPerformed: {
+                        ret = input.password;
+                        dispose();
+                    })
+                }
+            }
+        }
+        if (!ret) {
+            throw new GradleException('User canceled build')
+        }
+        return new String(ret)
+    } else {
+        return System.console().readPassword('\n' + msg);
+    }
+}
+
+def promptForReleaseKeyPassword() {
+    if (!System.env.RELEASE_SIGNING_PROPERTIES_FILE) {
+        return;
+    }
+    if (!android.signingConfigs.release.storePassword) {
+        android.signingConfigs.release.storePassword = promptForPassword('Enter key store password: ')
+        println('set to:' + android.signingConfigs.release.storePassword)
+    }
+    if (!android.signingConfigs.release.keyPassword) {
+        android.signingConfigs.release.keyPassword = promptForPassword('Enter key password: ');
+    }
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+    taskGraph.getAllTasks().each() { task ->
+        if (task.name == 'validateReleaseSigning') {
+            promptForReleaseKeyPassword()
+        }
+    }
+}
+
+def getVersionCodeFromManifest() {
+    def manifestFile = file(android.sourceSets.main.manifest.srcFile)
+    def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
+    def matcher = pattern.matcher(manifestFile.getText())
+    matcher.find()
+    return Integer.parseInt(matcher.group(1))
+}
+
+def ensureValueExists(filePath, props, key) {
+    if (props.get(key) == null) {
+        throw new GradleException(filePath + ': Missing key required "' + key + '"')
+    }
+    return props.get(key)
+}
+
+def addSigningProps(propsFilePath, signingConfig) {
+    def propsFile = file(propsFilePath)
+    def props = new Properties()
+    propsFile.withReader { reader ->
+        props.load(reader)
+    }
+    def storeFile = new File(ensureValueExists(propsFilePath, props, 'storeFile'))
+    if (!storeFile.isAbsolute()) {
+        storeFile = RelativePath.parse(true, storeFile.toString()).getFile(propsFile.getParentFile())
+    }
+    if (!storeFile.exists()) {
+        throw new FileNotFoundException('Keystore file does not exist: ' + storeFile.getAbsolutePath())
+    }
+    signingConfig.keyAlias = ensureValueExists(propsFilePath, props, 'keyAlias')
+    signingConfig.keyPassword = props.get('keyPassword')
+    signingConfig.storeFile = storeFile
+    signingConfig.storePassword = props.get('storePassword')
+    def storeType = props.get('storeType')
+    if (!storeType) {
+        def filename = storeFile.getName().toLowerCase();
+        if (filename.endsWith('.p12') || filename.endsWith('.pfx')) {
+            storeType = 'pkcs12'
+        }
+    }
+    if (storeType) {
+        signingConfig.storeType = storeType
+    }
+}
+
+if (file('build-extras.gradle').exists()) {
+    apply from: 'build-extras.gradle'
+}

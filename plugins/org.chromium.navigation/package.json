@@ -1,0 +1,21 @@
+{
+    "version": "1.0.2",
+    "name": "org.chromium.navigation",
+    "cordova_name": "Chrome Apps Navigation",
+    "repo": "https://github.com/MobileChromeApps/mobile-chrome-apps.git",
+    "issue": "https://github.com/MobileChromeApps/mobile-chrome-apps/issues",
+    "keywords": [
+        "chrome",
+        "navigation"
+    ],
+    "platforms": [
+        "android",
+        "ios"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.1.0-dev"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "version": "1.0.3",
+    "name": "org.chromium.polyfill.customevent",
+    "cordova_name": "CustomEvent constuctor shim",
+    "repo": "https://github.com/MobileChromeApps/mobile-chrome-apps.git",
+    "issue": "https://github.com/MobileChromeApps/mobile-chrome-apps/issues",
+    "keywords": [
+        "chrome",
+        "polyfill",
+        "custom",
+        "event"
+    ],
+    "platforms": [
+        "android"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.0.0"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+2014-11-01 01:14:40.491 HelloWorldApp[12348:563556] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/will/Library/Developer/CoreSimulator/Devices/23773FDA-98B6-474E-9634-4BA1A104CB6A/data/Containers/Data/Application/108DA0A8-760F-4A0E-8FFB-C03BD8194AA6/Library/Cookies/Cookies.binarycookies
+2014-11-01 01:14:40.600 HelloWorldApp[12348:563556] Apache Cordova native platform version 3.6.1 is starting.
+2014-11-01 01:14:40.600 HelloWorldApp[12348:563556] Multi-tasking -> Device: YES, App: YES
+2014-11-01 01:14:40.612 HelloWorldApp[12348:563556] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+
+2014-11-01 01:14:40.910 HelloWorldApp[12348:563556] [CDVTimer][file] 12.926996ms
+2014-11-01 01:14:40.911 HelloWorldApp[12348:563556] [CDVTimer][keyboard] 0.423014ms
+2014-11-01 01:14:40.982 HelloWorldApp[12348:563556] [CDVTimer][statusbar] 71.167946ms
+2014-11-01 01:14:40.983 HelloWorldApp[12348:563556] [CDVTimer][chromebootstrap] 0.297010ms
+2014-11-01 01:14:40.983 HelloWorldApp[12348:563556] [CDVTimer][chromeextensionurls] 0.059009ms
+2014-11-01 01:14:40.983 HelloWorldApp[12348:563556] [CDVTimer][chromenavigation] 0.036955ms
+2014-11-01 01:14:40.983 HelloWorldApp[12348:563556] [CDVTimer][TotalPluginStartup] 85.956991ms
+2014-11-01 01:14:42.006 HelloWorldApp[12348:563556] Resetting plugins due to page load.

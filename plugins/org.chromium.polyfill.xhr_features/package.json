@@ -1,0 +1,20 @@
+{
+    "version": "1.0.2",
+    "name": "org.chromium.polyfill.xhr_features",
+    "cordova_name": "XHR Blob Response Type Polyfill",
+    "repo": "https://github.com/MobileChromeApps/mobile-chrome-apps.git",
+    "issue": "https://github.com/MobileChromeApps/mobile-chrome-apps/issues",
+    "keywords": [
+        "chrome",
+        "polyfill",
+        "xhr",
+        "blob"
+    ],
+    "platforms": [],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.0.0"
+        }
+    ]
+}

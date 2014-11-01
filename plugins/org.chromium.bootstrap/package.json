@@ -1,0 +1,23 @@
+{
+    "version": "1.0.5",
+    "name": "org.chromium.bootstrap",
+    "cordova_name": "Chrome Apps Core",
+    "repo": "https://github.com/MobileChromeApps/mobile-chrome-apps.git",
+    "issue": "https://github.com/MobileChromeApps/mobile-chrome-apps/issues",
+    "keywords": [
+        "chrome",
+        "core",
+        "bootstrap",
+        "window"
+    ],
+    "platforms": [
+        "android",
+        "ios"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.0.0"
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+    "version": "1.0.1",
+    "name": "org.chromium.polyfill.blob_constructor",
+    "cordova_name": "Blob constructor shim",
+    "repo": "https://github.com/MobileChromeApps/mobile-chrome-apps.git",
+    "issue": "https://github.com/MobileChromeApps/mobile-chrome-apps/issues",
+    "keywords": [
+        "chrome",
+        "blob",
+        "polyfill"
+    ],
+    "platforms": [
+        "android"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.0.0"
+        }
+    ]
+}
